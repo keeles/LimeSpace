@@ -36,11 +36,11 @@
             </div>
 
             @if($playlist->songs->count() > 0)
-            <div class="p-4 mt-2">
-                <ul>
+            <div class="py-4 mt-2">
+                <ul class="">
                     @foreach($playlist->songs as $song)
-                    <li class="px-4 py-2 border-b border-gray-700 dark:border-gray-600">
-                        <div class="song-item xs:flex-col sm:flex justify-between items-center">
+                    <li class="py-2 border-b border-gray-700 dark:border-gray-600">
+                        <div class="song-item xs:flex-col sm:flex justify-between items-center px-4 rounded-sm">
                             <div>
                                 <h3 class="text-white">{{ $song->title }}</h3>
                                 <p class="text-gray-400">{{ $song->artist }}</p>

@@ -37,7 +37,6 @@ function initMusicPlayer() {
                 <span class="text-gray-300">Volume:</span>
                 <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1" class="w-24">
             </div>
-            <div id="currentTime" class="text-gray-300 ml-2 w-full">0:00 / 0:00</div>
         `;
 
         const songListContainer = document.querySelector("ul").parentElement;

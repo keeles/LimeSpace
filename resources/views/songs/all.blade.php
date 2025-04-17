@@ -21,18 +21,20 @@
                     {{ __("All Songs") }}
                 </div>
                 <div class="text-gray-900 dark:text-gray-100">
-                    @if($songs->isEmpty())
-                    <p>No songs available.</p>
-                    @else
+                    @if($songs->count() > 0)
                     @foreach($songs as $song)
                     <div class="song-item flex justify-between p-4 border-b border-gray-100 dark:bg-gray-900">
                         <h3>{{ $song->title }} - {{ $song->artist }}</h3>
                         <audio controls src="{{ $song->url }}" />
                     </div>
                     @endforeach
-                    @endif
                 </div>
             </div>
+            @else
+            <div class="dark:bg-gray-900">
+                <p class="p-6 text-gray-500 dark:text-gray-400 text-center">No songs available.</p>
+            </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

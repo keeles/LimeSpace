@@ -90,6 +90,12 @@ new class extends Component
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('songs.all')" :active="request()->routeIs('songs.all')" wire:navigate>
+                {{ __('All Songs') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('playlists.all')" :active="request()->routeIs('playlists.all')" wire:navigate>
+                {{ __('All Playlists') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

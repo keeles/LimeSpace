@@ -21,15 +21,18 @@ Route::prefix('songs')->name('songs.')->group(function () {
         return View("songs.new");
     });
     Route::post('/new', [SongController::class, 'new'])->name('new');
+    Route::delete('/{id}', [SongController::class, 'delete'])->name('delete');
     Route::get('/{id}', [SongController::class, 'show'])->name('show');
 });
 
 Route::prefix('playlists')->name('playlists.')->group(function () {
     Route::get('/', [PlaylistController::class, 'all'])->name('all');
-    Route::get('/create', [PlaylistController::class, 'create'])->name('create');
+    Route::get('/new', function () {
+        return View("playlists.new");
+    });
+    Route::post('/new', [PlaylistController::class, 'new']);
     Route::post('/', [PlaylistController::class, 'store'])->name('store');
     Route::get('/{id}', [PlaylistController::class, 'findById'])->name('show');
-    Route::get('/{id}/edit', [PlaylistController::class, 'edit'])->name('edit');
     Route::put('/{id}', [PlaylistController::class, 'update'])->name('update');
     Route::delete('/{id}', [PlaylistController::class, 'destroy'])->name('destroy');
 

@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use App\Models\Song;
+use App\Models\User;
 use App\Services\SongService;
 use Illuminate\Support\Facades\Storage as Storage;
 
@@ -40,8 +41,7 @@ class SongController extends Controller
     }
     function new(Request $request)
     {
-        //TODO: handle unauth user
-        // Gate::authorize('create', Song::class);
+        Gate::authorize('create', Song::class);
         try {
             if ($request->hasFile('song') && $request->file('song')->isValid()) {
                 $user = $request->user();
@@ -72,7 +72,22 @@ class SongController extends Controller
         } catch (\Exception $e) {
             Log::error('S3 upload failed: ' . $e->getMessage());
             Log::error($e->getTraceAsString());
-            return back()->withErrors(['song' => 'Error uploading file: ' . $e->getMessage()]);
+            return back()->withErrors(['song' => 'Error uploading file, please try again']);
         }
+    }
+    function delete($songId, Request $request)
+    {
+        $song = Song::find($songId);
+        Gate::authorize('delete', [Song::class, $song]);
+        $songOnPlaylist = DB::table('playlist_song')->join('playlists', 'playlist_song.playlist_id', '=', 'playlists.id')->where('playlist_song.song_id', '=', $songId, 'and')->where('playlists.user_id', $request->user()->id)->exists();
+        if ($songOnPlaylist) {
+            return back()->withErrors(['song' => 'Please remove song from all playlists first.']);
+        }
+        $destroyed = Song::destroy($songId);
+        if (!$destroyed) {
+            return back()->withErrors(['song' => 'Error deleting song.']);
+        }
+        Storage::disk('s3')->delete($song->filePath);
+        return redirect('/dashboard');
     }
 }
